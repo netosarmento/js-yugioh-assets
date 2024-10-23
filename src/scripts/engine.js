@@ -42,7 +42,7 @@ const cardData = [
      loseOf: [0],
     },
     {
-     id: 1, // criando outro objeto
+     id: 2, // criando outro objeto
      name: "Exodia",
      type: "Scissors",
      img: `${pathImages}exodia.png`,
@@ -74,6 +74,12 @@ async function createCardImage(IdCard, fieldSide) {    // criando função pra c
     });
 
     return cardImage;
+}
+
+async function drawSelectCard(index) {
+    state.cardSprites.avatar.src = cardData[index].img;
+    state.cardSprites.name.innerHTML = cardData[index].name;
+    state.cardSprites.type.innerHTML = "Atributte:" + cardData[index].type;    
 }
 
 async function drawCards(cardNumbers, fieldSide) {
