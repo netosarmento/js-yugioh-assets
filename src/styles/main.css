@@ -1,0 +1,119 @@
+.bg-video{
+    position: absolute; /* para poder manipular */
+    z-index: -2; /* controlando a profundidade e onde vai ficar tambem */
+    width: 100vw;  /* 100% da view de width */
+    height: 100vh; /* 100% da view de height */
+    overflow: hidden; /* o que sobrepor ou vier a mais esconder  */
+    display: flex;
+    justify-content: center;
+}
+
+.bg-video .video{
+    height: 100vh;
+}
+
+.bg-video::after {
+    content: ""; /* tem nada dentro do pseudo elemento */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,1) 100%); /* Botando a pelicula preta em 90 graus */
+}
+
+.conteiner{
+    position: relative; /* como video é absoluto, e esse é uma div filha, esse fica relativo */
+    z-index: 3; /*  valor positivo sobre o video */
+    display: flex;
+    height: 100vh;
+}
+
+.conteiner__left {
+    width: 35%;
+    min-width: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.conteiner__right {
+    width: 65%;
+}
+
+.score_box {
+    background-color: #fff;
+    padding: 30px;
+    align-items: center;
+}
+
+.frame {
+    border: 3px solid #000;
+    border-radius: 5px;
+}
+
+.card_details {
+    background-color: #fff;
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 6rem;
+    width: 90%;
+}
+
+#card-name {
+    font-size: 0.8rem;
+}
+
+#card-type {
+    font-size: 1rem;
+}
+
+.card-box_conteiner {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.3rem;
+}
+
+.card-versus {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.3rem;
+    height: 300px;
+    margin-top: 2rem;
+
+}
+
+.versus-top, .versus-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.versus-bottom {
+    margin-top: 1rem;
+}
+
+#next-duel{
+    display: none;
+}
+
+.card-box {
+    height: 9rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.card-infield {
+    height: 11.2rem;
+    width: 8rem;
+    border: 1px solid #fff;
+    border-radius: 8px;
+}
