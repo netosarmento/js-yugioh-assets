@@ -10,17 +10,25 @@ const state = {    // criando constante state que sao estados em formas de objet
       name: document.getElementById("card-name"), 
       type: document.getElementById("card-type"), 
   },
+  
+  playerSides: {    // função para identificar os lados no htlml usando os ID's
+    player1: "player-cards",  // pegando o id e associando a funçao
+    player1BOX: document.querySelector(".card-box.framed#player-cards"),
+    computer: "computer-cards",
+    computerBOX: document.querySelector(".card-box.framed#computer-cards"),
+  },
+
   fieldCards:{  // trocando as cartas no jogo
       player: document.getElementById("player-field-card"),
       computer: document.getElementById("computer-field-card"),
   },
   button: document.getElementById("next-duel"),  // como é só um botao assim é o suficiente
 };
-
+/*  foi jogado pra dentro do state tambem */
 const playerSides = {    // função para identificar os lados no htlml usando os ID's
     player1: "player-cards",  // pegando o id e associando a funçao
     computer: "computer-cards",
-}
+} 
 
 const pathImages = "src/assets/icons/"; // transformando o caminho numa variavel pra facilitar minha life
 
@@ -67,13 +75,43 @@ async function createCardImage(IdCard, fieldSide) {    // criando função pra c
         cardImage.addEventListener("click", () => {  // se o card for clicado ele vai
              setCardsField(cardImage.getAttribute("data-id"));   // vou setar cartas em campo, a cartar com id que eu apertar
         });
-    }
 
-    cardImage.addEventListener("mouseover", () => {   // se eu passar o mouse em cima do cardimage
+        cardImage.addEventListener("mouseover", () => {   // se eu passar o mouse em cima do cardimage
             drawSelectCard(IdCard);   // vai desenhar o a carta com esse id 
     });
+    }
+
+    
 
     return cardImage;
+}
+
+async function setCardsField(IdCard) {
+    
+    await removeAllCardsImage();
+    
+    let computerCardId = await getRandomCardId();
+
+    state.fieldCards.player.style.display = "block";
+    state.fieldCards.computer.style.display = "block";
+
+    state.fieldCards.player.src = cardData[IdCard].img; // to passando meu source da imagem como carddata o id
+    state.fieldCards.computer.src = cardData[computerCardId].img;
+
+    let duelResults = await checkDuelResults(IdCard, computerCardId); // verificando quem ganhou com funcao checkduel 
+
+    await updateScore(); // mostrar o resultado no score
+    await drawButton(duelResults); // botao mostrando o resultado
+}
+
+
+async function removeAllCardsImage() {
+    let { computerBOX, player1BOX } = state.playerSides; // selecionando a classe e id que quero
+    let imgElements = computerBOX.querySelector(("img")); // selecionando a tag img
+    imgElements.forEach((img) => img.remove()); //tirando as imagens
+
+    imgElements = player1BOX.querySelector(("img"));
+    imgElements.forEach((img) => img.remove());
 }
 
 async function drawSelectCard(index) {
