@@ -11,7 +11,7 @@ const state = {    // criando constante state que sao estados em formas de objet
       type: document.getElementById("card-type"), 
   },
   
-  playerSides: {    // função para identificar os lados no htlml usando os ID's
+  Sides: {    // função para identificar os lados no htlml usando os ID's
     player1: "player-cards",  // pegando o id e associando a funçao
     player1BOX: document.querySelector(".card-box.framed#player-cards"),
     computer: "computer-cards",
@@ -92,8 +92,10 @@ async function setCardsField(IdCard) {
     
     let computerCardId = await getRandomCardId();
 
-    state.fieldCards.player.style.display = "block";
+    state.fieldCards.player.style.display = "block";   //deixando pra nao ver, mas ta lá
     state.fieldCards.computer.style.display = "block";
+
+    await hiddenCardsDetail();
 
     state.fieldCards.player.src = cardData[IdCard].img; // to passando meu source da imagem como carddata o id
     state.fieldCards.computer.src = cardData[computerCardId].img;
@@ -104,13 +106,48 @@ async function setCardsField(IdCard) {
     await drawButton(duelResults); // botao mostrando o resultado
 }
 
+async function hiddenCardsDetail() {
+    state.cardSprites.avatar.src = "";
+    state.cardSprites.name.innerText = ""; // deixando sem ver ao botar o name e type como innertext
+    state.cardSprites.type.innerText = "";
+}
+
+async function drawButton(text) { 
+    state.button.innerText = text.toUpperCase();
+    state.button.style.display = "block";    
+}
+
+async function checkDuelResults(playerCardId, computerCardId) {    // logica de batalha
+    let duelResults = "Empate";
+    let playerCard = cardData[playerCardId]; // criando a variavel pra botar minha carta para checar
+
+    if (playerCard.winOf.includes(computerCardId)) {   // se o player card ganhar de inclui a variavel
+        duelResults = "win";
+        await PlayerAudio(duelResults);
+        state.score.playerScore++;   // aumentando o score
+    }
+
+    if (playerCard.loseOf.includes(computerCardId)) {   // se o player card agora perder de inclui a variavel
+        duelResults = "lose";
+        await PlayerAudio(duelResults);
+        state.score.computerScore++;   // aumentando o score
+    }
+
+    return duelResults;
+}
+
+async function updateScore() {
+    state.score.boxScore.innerText = `Win: ${state.score.playerScore} | Lose: ${state.score.computerScore}`;
+}
+
+
 
 async function removeAllCardsImage() {
-    let { computerBOX, player1BOX } = state.playerSides; // selecionando a classe e id que quero
-    let imgElements = computerBOX.querySelector(("img")); // selecionando a tag img
+    let { computerBOX, player1BOX } = state.Sides; // selecionando a classe e id que quero
+    let imgElements = computerBOX.querySelectorAll(("img")); // selecionando a tag img
     imgElements.forEach((img) => img.remove()); //tirando as imagens
 
-    imgElements = player1BOX.querySelector(("img"));
+    imgElements = player1BOX.querySelectorAll(("img"));
     imgElements.forEach((img) => img.remove());
 }
 
@@ -130,9 +167,36 @@ async function drawCards(cardNumbers, fieldSide) {
     }
 }
 
+async function resetDuel() {
+    state.cardSprites.avatar.src = "";
+    state.button.style.display = "none";
+
+    state.fieldCards.player.style.display = "none";  // removendo todos depois da batalha
+    state.fieldCards.computer.style.display = "none"; // removendo display das cartas para nao ver
+
+  init();   // usando init pra começar tudo de novo
+}
+
+async function PlayerAudio(status) {
+    const audio = new Audio(`src/assets/audios/${status}.wav`);
+    
+    try {
+    audio.play();
+    } catch {}
+}
+
+
+
 function init () {
+    state.fieldCards.player.style.display = "none";
+    state.fieldCards.computer.style.display = "none";
+
     drawCards(5, playerSides.player1);
     drawCards(5, playerSides.computer);
+
+    // adicionando som de fundo ao jogo
+    const bgm = document.getElementById("bgm");
+    bgm.play();
 }
 
 init();

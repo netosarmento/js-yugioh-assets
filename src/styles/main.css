@@ -81,7 +81,7 @@
 }
 
 .card {
-    
+    transition: transform 0.2s;
 }
 
 .card:hover {
@@ -91,9 +91,10 @@
 .card-versus {
     display: flex;
     flex-direction: column;
-    padding-top: 0.3rem;
+    justify-items: center;
+    align-content: center;
+    padding-top: 0.1rem;
     height: 300px;
-    margin-top: 2rem;
 
 }
 
@@ -125,4 +126,18 @@
     width: 8rem;
     border: 1px solid #fff;
     border-radius: 8px;
+}
+
+body {  /* Criando um cursor personalizado */
+   cursor: url("/src/assets/cursor/yugicursor.png"), default;
+}
+
+/* dando efeito com outro cursor automaticamente */
+
+button,
+a,
+img:hover,
+button:hover,
+a:hover {
+    cursor: url("/src/assets/cursor/yamiyugicursorGLOW.png"), auto;
 }
